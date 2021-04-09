@@ -79,7 +79,7 @@
             </Grid>
         </Grid>
         <Grid VerticalAlignment="Top" Margin="10">
-            <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top">
+            <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Click="Browse" >
                 <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" >
                     <materialDesign:PackIcon.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
@@ -91,7 +91,7 @@
                     </materialDesign:PackIcon.Foreground>
                 </materialDesign:PackIcon>
             </Button>
-            <StackPanel>
+            <StackPanel Height="41" VerticalAlignment="Top">
                 <TextBlock Text="Artist" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
                 <TextBlock Text="Song Name" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
 

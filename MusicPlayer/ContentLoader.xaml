@@ -1,0 +1,59 @@
+﻿<Window x:Class="MusicPlayer.ContentLoader"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicPlayer"
+        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="ContentLoader" Height="300" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Foreground="LightSteelBlue" WindowState="Normal" SizeToContent="Manual">
+
+    <Grid Background="Black" Width="300" Height="300">
+        <StackPanel Height="41" VerticalAlignment="Top">
+            <TextBlock Text="Load your music" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
+        </StackPanel>
+        <StackPanel Height="41" VerticalAlignment="Top" Margin="0,46,0,0" Background="Black">
+            <TextBox Width="300"  materialDesign:HintAssist.Hint="        Provide a link/path to load your music library"  HorizontalAlignment="Center" SelectionBrush="#FF00D71D"  CaretBrush="#FF05F747" Background="#00000000" Foreground="LightSteelBlue">
+            </TextBox>
+        </StackPanel>
+        <StackPanel Width ="300" Height="80">
+            <TextBlock Text="Add a songs to you current library" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
+
+            <Button x:Name="File" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Center" Margin="30,5">
+                <materialDesign:PackIcon Kind="Folder" Width="30" Height="30">
+                    <materialDesign:PackIcon.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="Lime"/>
+                            <GradientStop Color="LightGreen" Offset="0.747"/>
+                            <GradientStop Color="DarkGreen" Offset="0.870"/>
+                        </LinearGradientBrush>
+                    </materialDesign:PackIcon.Foreground>
+                </materialDesign:PackIcon>
+            </Button>
+        </StackPanel>
+        <Grid Width ="300" Height="50" VerticalAlignment ="Bottom">
+            <Button x:Name="ok" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" Margin="30,0">
+                <materialDesign:PackIcon Kind="Done" Width="30" Height="30">
+                    <materialDesign:PackIcon.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="Lime"/>
+                            <GradientStop Color="LightGreen" Offset="0.747"/>
+                            <GradientStop Color="DarkGreen" Offset="0.870"/>
+                        </LinearGradientBrush>
+                    </materialDesign:PackIcon.Foreground>
+                </materialDesign:PackIcon>
+            </Button>
+            <Button x:Name="cancel" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Right" Margin="30,0" Click="Cancel">
+                <materialDesign:PackIcon Kind="Close" Width="30" Height="30" RenderTransformOrigin="0.517,-1.033">
+                    <materialDesign:PackIcon.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="Lime"/>
+                            <GradientStop Color="LightGreen" Offset="0.747"/>
+                            <GradientStop Color="DarkGreen" Offset="0.870"/>
+                        </LinearGradientBrush>
+                    </materialDesign:PackIcon.Foreground>
+                </materialDesign:PackIcon>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

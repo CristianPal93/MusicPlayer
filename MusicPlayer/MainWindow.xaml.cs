@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 namespace MusicPlayer
 {
     /// <summary>
@@ -23,6 +22,8 @@ namespace MusicPlayer
     public partial class MainWindow : Window
     {
         private bool isPlaying = false;
+        private ContentLoader cL;
+        public static bool isOpen = false;
         public MainWindow()
         {
             try
@@ -97,6 +98,21 @@ namespace MusicPlayer
 
 
         }
+       
 
+        private void Browse(object sender, RoutedEventArgs e)
+        {
+
+           
+            if (isOpen)
+            {
+                cL.Close();
+                isOpen = false;
+            }
+            cL = new ContentLoader();
+            cL.Show();
+            isOpen = true;
+
+        }
     }
 }
