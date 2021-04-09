@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\default3.jpg" />
+    <None Remove="Resources\photo1.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\photo1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.50.0.2238" />
     <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
   </ItemGroup>
