@@ -13,7 +13,7 @@
             <TextBlock Text="Load your music" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
         </StackPanel>
         <StackPanel Height="41" VerticalAlignment="Top" Margin="0,46,0,0" Background="Black">
-            <TextBox Width="300"  materialDesign:HintAssist.Hint="        Provide a link/path to load your music library"  HorizontalAlignment="Center" SelectionBrush="#FF00D71D"  CaretBrush="#FF05F747" Background="#00000000" Foreground="LightSteelBlue">
+            <TextBox Width="300" Name="TextBoxInput" materialDesign:HintAssist.Hint="    Provide a link/path to load your music/video library"  HorizontalAlignment="Center" SelectionBrush="#FF00D71D"  CaretBrush="#FF05F747" Background="#00000000" Foreground="LightSteelBlue">
             </TextBox>
         </StackPanel>
         <StackPanel Width ="300" Height="80">
@@ -32,7 +32,7 @@
             </Button>
         </StackPanel>
         <Grid Width ="300" Height="50" VerticalAlignment ="Bottom">
-            <Button x:Name="ok" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" Margin="30,0">
+            <Button x:Name="ok" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" Margin="30,0" Click="ok_Click">
                 <materialDesign:PackIcon Kind="Done" Width="30" Height="30">
                     <materialDesign:PackIcon.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">

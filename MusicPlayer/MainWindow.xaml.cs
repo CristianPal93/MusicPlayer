@@ -1,15 +1,16 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using MaterialDesignThemes.Wpf;
-using SpotifyAPI.Web;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
 namespace MusicPlayer
 {
     /// <summary>
@@ -21,20 +22,42 @@ namespace MusicPlayer
         private bool isPlaying = false;
         private ContentLoader cL;
         public static bool isOpen = false;
+        public static string videoId = "";
         List<Video> videos = new List<Video>();
-
+    
 
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
+                var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                // Default installation path of VideoLAN.LibVLC.Windows
+                var libDirectory =
+                    new DirectoryInfo(".\\libvlc\\");
+                Trace.WriteLine(String.Format("path {0}", libDirectory));
 
-                Task.Run(async () => await GetYoutubePlayList("PL15B1E77BB5708555"));
+                using (var mediaPlayer = new Vlc.DotNet.Core.VlcMediaPlayer(libDirectory))
+                {
 
+                    var mediaOptions = new[]
+                    {
+                    ":sout=#rtp{sdp=rtsp://127.0.0.1:554/}",
+                    ":sout-keep"
+                };
 
+                    mediaPlayer.SetMedia(new Uri("http://hls1.addictradio.net/addictrock_aac_hls/playlist.m3u8"),
+                        mediaOptions);
 
+                    mediaPlayer.Play();
+
+                    Console.WriteLine("Streaming on rtsp://127.0.0.1:554/");
+                    Console.WriteLine("Press any key to exit");
+                    
+
+                }
             }
+
             catch (System.Windows.Markup.XamlParseException e)
             {
 
@@ -43,9 +66,17 @@ namespace MusicPlayer
             //  Console.ReadKey();
         }
 
-        private static async Task<FullTrack> NewMethod(SpotifyClient spotify)
+
+        public  async Task SyncList()
         {
-            return await spotify.Tracks.Get("1s6ux0lNiTziSrd7iUAADH");
+            Trace.WriteLine("intra!");
+
+            if (!String.IsNullOrEmpty(videoId))
+            {
+                await Task.Run(async () => await GetYoutubePlayList(videoId));
+
+            }
+            listView.ItemsSource = videos;
         }
 
         private void CloseApp(object sender, RoutedEventArgs e)
@@ -124,10 +155,12 @@ namespace MusicPlayer
                 isOpen = false;
             }
             cL = new ContentLoader();
+            videoId = "";
             cL.Show();
+            cL.Owner = this;
             isOpen = true;
 
-            listView.ItemsSource = videos;
+            
            
         }
 
@@ -136,7 +169,7 @@ namespace MusicPlayer
             base.OnMouseLeftButtonUp(e);
             DragMove();
         }
-        private  async Task GetYoutubePlayList(string playlistId)
+        public  async Task GetYoutubePlayList(string playlistId)
         {
 
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
