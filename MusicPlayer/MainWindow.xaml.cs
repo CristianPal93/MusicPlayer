@@ -4,13 +4,14 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
+using Vlc.DotNet.Wpf;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.IO;
+using System.Reflection;
+
 namespace MusicPlayer
 {
     /// <summary>
@@ -24,38 +25,33 @@ namespace MusicPlayer
         public static bool isOpen = false;
         public static string videoId = "";
         List<Video> videos = new List<Video>();
-    
+
+        private readonly DirectoryInfo vlcLibDirectory;
+        private VlcControl control;
+
 
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
-                var currentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                var currentAssembly = Assembly.GetEntryAssembly();
+                var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
                 // Default installation path of VideoLAN.LibVLC.Windows
-                var libDirectory =
-                    new DirectoryInfo(".\\libvlc\\");
-                Trace.WriteLine(String.Format("path {0}", libDirectory));
+                vlcLibDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+                this.control?.Dispose();
+                this.control = new VlcControl();
+                this.ControlContainer.Content = this.control;
+                this.control.SourceProvider.CreatePlayer(this.vlcLibDirectory);
 
-                using (var mediaPlayer = new Vlc.DotNet.Core.VlcMediaPlayer(libDirectory))
+                // This can also be called before EndInit
+                this.control.SourceProvider.MediaPlayer.Log += (_, args) =>
                 {
-
-                    var mediaOptions = new[]
-                    {
-                    ":sout=#rtp{sdp=rtsp://127.0.0.1:554/}",
-                    ":sout-keep"
+                    string message = $"libVlc : {args.Level} {args.Message} @ {args.Module}";
+                    System.Diagnostics.Debug.WriteLine(message);
                 };
 
-                    mediaPlayer.SetMedia(new Uri("http://hls1.addictradio.net/addictrock_aac_hls/playlist.m3u8"),
-                        mediaOptions);
-
-                    mediaPlayer.Play();
-
-                    Console.WriteLine("Streaming on rtsp://127.0.0.1:554/");
-                    Console.WriteLine("Press any key to exit");
-                    
-
-                }
+                control.SourceProvider.MediaPlayer.Play(new Uri("C:\\Users\\raul_\\Videos\\Counter-strike  Global Offensive\\Counter-strike  Global Offensive 2021.04.13 - 00.14.26.04.mp4"));
             }
 
             catch (System.Windows.Markup.XamlParseException e)

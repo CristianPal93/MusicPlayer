@@ -26,7 +26,11 @@
     <PackageReference Include="SpotifyAPI.Web" Version="6.1.0" />
     <PackageReference Include="SpotifyAPI.Web.Auth" Version="6.1.0" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.12" />
+    <PackageReference Include="Vlc.DotNet.Core" Version="3.1.0" />
+    <PackageReference Include="Vlc.DotNet.Core.Interops" Version="3.1.0" />
+    <PackageReference Include="Vlc.DotNet.Forms" Version="3.1.0" />
     <PackageReference Include="Vlc.DotNet.Wpf" Version="3.1.0" />
+    <PackageReference Include="WPFMediaKit" Version="2.2.0" />
     <PackageReference Include="YoutubeExplode" Version="3.0.0" />
   </ItemGroup>
 

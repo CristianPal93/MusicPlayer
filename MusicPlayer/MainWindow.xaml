@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vlc="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         mc:Ignorable="d"
+        xmlns:local="clr-namespace:MusicPlayer"
+        xmlns:wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Music Player" Height="600" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Foreground="LightSteelBlue" MouseLeftButtonDown="Window_move">
 
@@ -39,7 +40,8 @@
                 </Ellipse.Fill>
                
             </Ellipse>
-            <vlc:VlcControl x:Name="vlcPlayer1" />
+            <ContentControl Grid.Row="0" Name="ControlContainer">
+            </ContentControl>
             <Grid VerticalAlignment="Bottom" Margin="10">
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
