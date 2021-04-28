@@ -11,6 +11,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.IO;
 using System.Reflection;
+using YoutubeExplode;
+using NYoutubeDL;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace MusicPlayer
 {
@@ -20,50 +24,95 @@ namespace MusicPlayer
 
     public partial class MainWindow : Window
     {
+
         private bool isPlaying = false;
         private ContentLoader cL;
         public static bool isOpen = false;
         public static string videoId = "";
         List<Video> videos = new List<Video>();
-
-        private readonly DirectoryInfo vlcLibDirectory;
+        private YoutubeDL youtubeDl = new YoutubeDL();
+        private DirectoryInfo vlcLibDirectory;
         private VlcControl control;
-
+        public int songIndex = 0;
+        private Button button;
+        private PackIcon pack;
 
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
-                var currentAssembly = Assembly.GetEntryAssembly();
-                var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-                // Default installation path of VideoLAN.LibVLC.Windows
-                vlcLibDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
-                this.control?.Dispose();
-                this.control = new VlcControl();
-                this.ControlContainer.Content = this.control;
-                this.control.SourceProvider.CreatePlayer(this.vlcLibDirectory);
+                initVlcPlayer();
+                initYoutubeDll();
+             
 
-                // This can also be called before EndInit
-                this.control.SourceProvider.MediaPlayer.Log += (_, args) =>
-                {
-                    string message = $"libVlc : {args.Level} {args.Message} @ {args.Module}";
-                    System.Diagnostics.Debug.WriteLine(message);
-                };
-
-                control.SourceProvider.MediaPlayer.Play(new Uri("C:\\Users\\raul_\\Videos\\Counter-strike  Global Offensive\\Counter-strike  Global Offensive 2021.04.13 - 00.14.26.04.mp4"));
             }
-
             catch (System.Windows.Markup.XamlParseException e)
             {
 
                 Console.WriteLine(e);
             }
-            //  Console.ReadKey();
         }
 
 
-        public  async Task SyncList()
+
+        public void YoutubeBuffer(string url)
+        {
+                
+        
+                try
+                {
+                    youtubeDl.DownloadAsync(url);
+                    Trace.WriteLine(String.Format("Buffering video {0}", url));
+
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine(String.Format("Error at {0}", ex));
+                }
+
+       
+
+            
+        }
+
+
+        private void initYoutubeDll() {
+            youtubeDl.Options.FilesystemOptions.Output = Directory.GetCurrentDirectory() + @"\tmp\temp.m4a";
+            youtubeDl.Options.PostProcessingOptions.AudioFormat = NYoutubeDL.Helpers.Enums.AudioFormat.m4a;
+            youtubeDl.YoutubeDlPath = Directory.GetCurrentDirectory() + @"\libytdl\youtube-dl.exe";
+            youtubeDl.Options.PostProcessingOptions.ExtractAudio = true;
+            youtubeDl.Info.PropertyChanged += Info_PropertyChanged;
+
+        }
+
+        private void initVlcPlayer() {
+
+            var currentAssembly = Assembly.GetEntryAssembly();
+            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
+            // Default installation path of VideoLAN.LibVLC.Windows
+            vlcLibDirectory = new DirectoryInfo(Path.Combine(currentDirectory, "libvlc", IntPtr.Size == 4 ? "win-x86" : "win-x64"));
+            this.control?.Dispose();
+            this.control = new VlcControl();
+            //  this.ControlContainer.Content = this.control;
+            this.vlcPlayer.Content = this.control;
+
+            this.control.SourceProvider.CreatePlayer(this.vlcLibDirectory);
+            // This can also be called before EndInit
+            this.control.SourceProvider.MediaPlayer.Log += (_, args) =>
+            {
+                string message = $"libVlc : {args.Level} {args.Message} @ {args.Module}";
+                System.Diagnostics.Debug.WriteLine(message);
+            };
+
+        }
+
+        private void Info_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Trace.WriteLine(String.Format("Calling Info Prop {0}", e));
+        }
+
+        public async Task SyncList()
         {
             Trace.WriteLine("intra!");
 
@@ -77,6 +126,7 @@ namespace MusicPlayer
 
         private void CloseApp(object sender, RoutedEventArgs e)
         {
+            deleteAllTempFiles(Directory.GetCurrentDirectory() + @"\tmp\");
             Environment.Exit(0);
 
         }
@@ -89,8 +139,8 @@ namespace MusicPlayer
 
         private void WindowMaximized(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            PackIcon pack = (button.FindName("WindowSettings") as PackIcon);
+            button = sender as Button;
+            pack = (button.FindName("WindowSettings") as PackIcon);
             if (pack.Kind.Equals(PackIconKind.WindowMaximize))
             {
                 this.WindowState = WindowState.Maximized;
@@ -114,6 +164,8 @@ namespace MusicPlayer
 
         }
 
+
+
         private void Urmator_Click(object sender, RoutedEventArgs e)
         {
 
@@ -121,20 +173,34 @@ namespace MusicPlayer
 
         private void PlayPause_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
-            PackIcon pack = (button.FindName("PlayPauseIcon") as PackIcon);
+            button = sender as Button;
+            pack = (button.FindName("PlayPauseIcon") as PackIcon);
             if (pack.Kind.Equals(PackIconKind.Play))
             {
                 this.isPlaying = true;
-                (button.FindName("PlayPauseIcon") as PackIcon).Kind = PackIconKind.Pause;
+                (button.FindName("PlayPauseIcon") as PackIcon).Kind = PackIconKind.Stop;
+
+
+                control.SourceProvider.MediaPlayer.Play(new Uri(Directory.GetCurrentDirectory() + @"\tmp\temp.m4a"));
+
+
+                this.vlcPlayer.Visibility = Visibility.Hidden;
+
+
+
+
 
             }
             else
             {
 
-                this.isPlaying = false;
-                (button.FindName("PlayPauseIcon") as PackIcon).Kind = PackIconKind.Play;
 
+                if (control.SourceProvider.MediaPlayer.IsPlaying())
+                {
+                    (button.FindName("PlayPauseIcon") as PackIcon).Kind = PackIconKind.Play;
+                    control.SourceProvider.MediaPlayer.SetPause(true);
+                    this.isPlaying = false;
+                }
             }
 
 
@@ -156,8 +222,8 @@ namespace MusicPlayer
             cL.Owner = this;
             isOpen = true;
 
-            
-           
+
+
         }
 
         private void Window_move(object sender, MouseButtonEventArgs e)
@@ -165,7 +231,7 @@ namespace MusicPlayer
             base.OnMouseLeftButtonUp(e);
             DragMove();
         }
-        public  async Task GetYoutubePlayList(string playlistId)
+        public async Task GetYoutubePlayList(string playlistId)
         {
 
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
@@ -191,11 +257,23 @@ namespace MusicPlayer
                 var playlistItemsListResponse = await playlistItemsListRequest.ExecuteAsync();
                 foreach (var playlistItem in playlistItemsListResponse.Items)
                 {
-                    if (playlistItem.Snippet.Title.ToString() != "Deleted video" || playlistItem.Snippet.Title.ToString() != "Private video" )
+                    if (playlistItem.Snippet.Title.ToString() != "Deleted video" || playlistItem.Snippet.Title.ToString() != "Private video")
                     {
                         // Print information about each video.
                         String thumbnail = "https://img.youtube.com/vi/" + playlistItem.Snippet.ResourceId.VideoId.ToString() + "/default.jpg";
-                        videos.Add(new Video() { TrackNo=trackNo,Name=playlistItem.Snippet.Title.ToString(),videoID=playlistItem.Snippet.ResourceId.VideoId,Thumbnail=thumbnail});
+                        String Mainthumbnail = "https://img.youtube.com/vi/" + playlistItem.Snippet.ResourceId.VideoId.ToString() + "/hqdefault.jpg";
+                        String Artist = "";
+                        String Title = "";
+                        try
+                        {
+                            String[] Artist_Title = playlistItem.Snippet.Title.ToString().Split('-');
+                            Artist = Artist_Title[0];
+                            Title = Artist_Title[1];
+                        } catch (Exception ex)
+                        {
+                            Trace.WriteLine(String.Format("Can't split Artist title"));
+                        }
+                        videos.Add(new Video() { TrackNo = trackNo, Name = playlistItem.Snippet.Title.ToString(), VideoID = playlistItem.Snippet.ResourceId.VideoId, Thumbnail = thumbnail, ThumbnailFront = Mainthumbnail, Artist = Artist, Title = Title });
                         trackNo += 1;
 
 
@@ -208,15 +286,56 @@ namespace MusicPlayer
 
 
             Trace.WriteLine(String.Format("Videos:\n{0}\n", string.Join("\n", videos[0].Name)));
-           
+
 
 
         }
 
+        private async Task RenderSong()
+        {
+            PlayPauseIcon.Kind = PackIconKind.Play;
+
+            await Task.Delay(6000);
+            if (control.SourceProvider.MediaPlayer.IsPlaying())
+            {
+                control.SourceProvider.MediaPlayer.Stop();
+                control.SourceProvider.MediaPlayer.Play(new Uri(Directory.GetCurrentDirectory() + @"\tmp\temp.m4a"));
+            }
+            control.SourceProvider.MediaPlayer.Play(new Uri(Directory.GetCurrentDirectory() + @"\tmp\temp.m4a"));
+            PlayPauseIcon.Kind = PackIconKind.Stop;
+            this.isPlaying = true;
+        }
+
+            private void listView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            songIndex = this.listView.Items.IndexOf(listView.SelectedItem);
+            if (songIndex != System.Windows.Forms.ListBox.NoMatches)
+            {
+                Trace.WriteLine(String.Format("Selected item is {0}", videos[songIndex].ThumbnailFront));
 
 
-       
+            }
+            Thumbnail.ImageSource = new BitmapImage(new Uri(videos[songIndex].ThumbnailFront.ToString()));
+            Artist.Text = videos[songIndex].Artist;
+            Title.Text = videos[songIndex].Title;
+            string songUrl = "https://www.youtube.com/watch?v=" + videos[songIndex].VideoID;
+            deleteAllTempFiles(Directory.GetCurrentDirectory() + @"\tmp\");
+            YoutubeBuffer(songUrl);
+            RenderSong();
+            Trace.WriteLine(String.Format("Done rendering!"));
 
+        }
+
+
+        private void deleteAllTempFiles(String url) {
+
+            DirectoryInfo di = new DirectoryInfo(url);
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+        }
+     
     }
 }
 

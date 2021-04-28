@@ -34,14 +34,13 @@
                 </Ellipse.Fill>
             </Ellipse>
             <Ellipse Width="135" Height="135">
-                
+
                 <Ellipse.Fill>
-                    <ImageBrush ImageSource="Resources/photo1.jpg"></ImageBrush>
+                    <ImageBrush x:Name="Thumbnail" ImageSource="Resources/photo1.jpg"></ImageBrush>
                 </Ellipse.Fill>
-               
+
             </Ellipse>
-            <ContentControl Grid.Row="0" Name="ControlContainer">
-            </ContentControl>
+            <wpf:VlcControl x:Name="vlcPlayer" Visibility="Hidden"></wpf:VlcControl>
             <Grid VerticalAlignment="Bottom" Margin="10">
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -81,6 +80,7 @@
                     </Button>
                 </StackPanel>
             </Grid>
+          
         </Grid>
         <Grid VerticalAlignment="Top" Margin="10">
             <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Click="Browse" >
@@ -96,8 +96,8 @@
                 </materialDesign:PackIcon>
             </Button>
             <StackPanel Height="41" VerticalAlignment="Top">
-                <TextBlock Text="Artist" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
-                <TextBlock Text="Song Name" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
+                <TextBlock x:Name="Artist" Text="Artist" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
+                <TextBlock x:Name="Title" Text="Song Name" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
 
             </StackPanel>
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -139,23 +139,8 @@
             </StackPanel>
 
         </Grid>
-        <ListView Name="listView" VerticalAlignment="Top" Height="290" Margin="5,305,5,0" Foreground="LightSteelBlue">
-            <!---
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="01" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Resources/photo1.jpg"/>
-                        </Ellipse.Fill>
-                       
-                    </Ellipse>
-                    <TextBlock Text="Abstract - Neverland (ft. Ruth B) (Prod. Blulake)" Margin="10,0" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2017" VerticalAlignment="Center"/>
-                    <TextBlock Text="3:45" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            -->
+        <ListView Name="listView" VerticalAlignment="Top" Height="290" Margin="5,305,5,0" Foreground="LightSteelBlue" MouseDoubleClick="listView_MouseDoubleClick">
+   
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -171,81 +156,7 @@
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <!--
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="02" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                         Ignore Ellipse..>
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Assets/photo (1).jpg"/>
-                        </Ellipse.Fill>
-                        < 
-                    </Ellipse>
-                    <TextBlock Text="Steam Phunk – Grow" Margin="10,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2017" VerticalAlignment="Center"/>
-                    <TextBlock Text="3:20" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="03" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                         Ignore Ellipse..>
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Assets/photo (1).jpg"/>
-                        </Ellipse.Fill>
-                        < 
-                    </Ellipse>
-                    <TextBlock Text="MikeStud – Let Her Go" Margin="10,0" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2017" VerticalAlignment="Center"/>
-                    <TextBlock Text="2:57" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="04" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Assets/photo (2).jpg"/>
-                        </Ellipse.Fill>
-                        
-                    </Ellipse>
-                    <TextBlock Text="Janji – Heroes Tonight" Margin="10,0" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2016" VerticalAlignment="Center"/>
-                    <TextBlock Text="3:28" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="05" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                        < Ignore Ellipse..>
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Assets/photo.jpg"/>
-                        </Ellipse.Fill>
-                        
-                    </Ellipse>
-                    <TextBlock Text="Alan Walker – Force" Margin="10,0" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2017" VerticalAlignment="Center"/>
-                    <TextBlock Text="3:22" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            <ListViewItem>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="06" Margin="5" VerticalAlignment="Center"/>
-                    <Ellipse Width="30" Height="30">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="Assets/photo.jpg"/>
-                        </Ellipse.Fill>
-                        < 
-                    </Ellipse>
-                    <TextBlock Text="Krys Talk – Fly Away" Margin="10,0" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
-                    <TextBlock Text="2017" VerticalAlignment="Center"/>
-                    <TextBlock Text="4:02" Margin="10,0" VerticalAlignment="Center"/>
-                </StackPanel>
-            </ListViewItem>
-            -->
+           
         </ListView>
 
     </Grid>

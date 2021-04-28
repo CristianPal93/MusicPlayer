@@ -9,9 +9,15 @@ namespace MusicPlayer
         public int TrackNo { get; set; }
         public string Name { get; set; }
 
-        public string videoID { get;  set; }
+        public string VideoID { get;  set; }
 
         public string Thumbnail { get; set; }
+
+        public string ThumbnailFront { get; set; }
+        
+        public string Artist { set; get; }
+
+        public string Title { set; get; }
 
     }
 }
