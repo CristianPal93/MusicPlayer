@@ -42,8 +42,9 @@
             </Ellipse>
             <wpf:VlcControl x:Name="vlcPlayer" Visibility="Hidden"></wpf:VlcControl>
             <Grid VerticalAlignment="Bottom" Margin="10">
-
+                <Slider x:Name="slider" Minimum="0" Maximum="100" Value="0" Margin="0,-16" Thumb.DragCompleted="slider_seek"></Slider>
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock x:Name="StartTime" Text="0:00:00" HorizontalAlignment="Left"   Margin="80,15" Foreground="LightSteelBlue"/>
 
                     <Button x:Name="Anterior" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" Margin="30,0" Click="Anterior_Click">
                         <materialDesign:PackIcon Kind="ChevronLeft" Width="30" Height="30" HorizontalAlignment="Center">
@@ -78,24 +79,40 @@
                             </materialDesign:PackIcon.Foreground>
                         </materialDesign:PackIcon>
                     </Button>
+                    <TextBlock x:Name="EndTime" Text="0:00:00" HorizontalAlignment="Right" Margin="80,15" Foreground="LightSteelBlue"/>
+
                 </StackPanel>
             </Grid>
           
         </Grid>
         <Grid VerticalAlignment="Top" Margin="10">
-            <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Click="Browse" >
-                <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" >
-                    <materialDesign:PackIcon.Foreground>
-                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
-                            <GradientStop Color="Lime"/>
-                            <GradientStop Color="LightGreen" Offset="0.747"/>
-                            <GradientStop Color="DarkGreen" Offset="0.870"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Click="Browse" >
+                    <materialDesign:PackIcon Kind="Plus" Width="20" Height="20" >
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="Lime"/>
+                                <GradientStop Color="LightGreen" Offset="0.747"/>
+                                <GradientStop Color="DarkGreen" Offset="0.870"/>
 
-                        </LinearGradientBrush>
-                    </materialDesign:PackIcon.Foreground>
-                </materialDesign:PackIcon>
-            </Button>
-            <StackPanel Height="41" VerticalAlignment="Top">
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+                <Button HorizontalAlignment="Left" Width="20" Height="20" Margin="10.5" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Click="clearList" >
+                    <materialDesign:PackIcon Kind="Trash" Width="20" Height="20" >
+                        <materialDesign:PackIcon.Foreground>
+                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                <GradientStop Color="Lime"/>
+                                <GradientStop Color="LightGreen" Offset="0.747"/>
+                                <GradientStop Color="DarkGreen" Offset="0.870"/>
+
+                            </LinearGradientBrush>
+                        </materialDesign:PackIcon.Foreground>
+                    </materialDesign:PackIcon>
+                </Button>
+            </StackPanel>
+            <StackPanel>
                 <TextBlock x:Name="Artist" Text="Artist" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
                 <TextBlock x:Name="Title" Text="Song Name" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
 

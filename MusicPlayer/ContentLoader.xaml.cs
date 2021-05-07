@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,7 +19,8 @@ namespace MusicPlayer
     /// Interaction logic for ContentLoader.xaml
     /// </summary>
     public partial class ContentLoader : Window
-    {   
+    {
+        private string OneFile = "";
         public ContentLoader()
         {
             InitializeComponent();
@@ -36,14 +39,14 @@ namespace MusicPlayer
             if (!String.IsNullOrEmpty(url))
             {
                 bool web_url = isWebUrl(url);
-                
+
                 if (web_url)
                 {
-                   
+
                     videoId = getListID(url);
                     if (!String.IsNullOrEmpty(videoId))
                     {
-                       
+
                         MainWindow.videoId = videoId;
                         System.Threading.Tasks.Task task = ((MainWindow)this.Owner).SyncList();
                         this.Close();
@@ -52,8 +55,21 @@ namespace MusicPlayer
                 }
                 else
                 {
-                    Trace.WriteLine("is not web url is local path");
+                    if (IsValidPath(url)){
+
+                        
+                       ((MainWindow)this.Owner).SyncLocalList(url);
+                        this.Close();
+                    }
+                    else {
+                        Trace.WriteLine("is not a valid path!");
+                    }
                 }
+            }
+            else if (!String.IsNullOrEmpty(OneFile))
+            {
+                ((MainWindow)this.Owner).SyncLocalOneFile(OneFile);
+                this.Close();
             }
             else
             {
@@ -93,6 +109,43 @@ namespace MusicPlayer
                 return true;
             }
             return false;
+        }
+
+        private bool IsValidPath(string path)
+        {
+            Regex driveCheck = new Regex(@"^[a-zA-Z]:\\$");
+            if (!driveCheck.IsMatch(path.Substring(0, 3))) return false;
+            string strTheseAreInvalidFileNameChars = new string(System.IO.Path.GetInvalidPathChars());
+            strTheseAreInvalidFileNameChars += @":/?*" + "\"";
+            Regex containsABadCharacter = new Regex("[" + Regex.Escape(strTheseAreInvalidFileNameChars) + "]");
+            if (containsABadCharacter.IsMatch(path.Substring(3, path.Length - 3)))
+                return false;
+
+            DirectoryInfo dir = new DirectoryInfo(System.IO.Path.GetFullPath(path));
+            if (!dir.Exists)
+                dir.Create();
+            return true;
+        }
+
+        private void File_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            
+            dlg.DefaultExt = ".mp3";
+            dlg.Filter = "Mp3 Files (*.mp3)|*.mp3";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+            if (result == true)
+            {
+                // Open document 
+               OneFile = dlg.FileName;
+                
+               
+
+            }
+            
         }
     }
 }

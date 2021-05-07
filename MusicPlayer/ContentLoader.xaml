@@ -19,7 +19,7 @@
         <StackPanel Width ="300" Height="80">
             <TextBlock Text="Add a songs to you current library" HorizontalAlignment="Center" Foreground="LightSteelBlue"/>
 
-            <Button x:Name="File" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Center" Margin="30,5">
+            <Button x:Name="File" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Center" Margin="30,5" Click="File_Click">
                 <materialDesign:PackIcon Kind="Folder" Width="30" Height="30">
                     <materialDesign:PackIcon.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">

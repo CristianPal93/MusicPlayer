@@ -19,5 +19,7 @@ namespace MusicPlayer
 
         public string Title { set; get; }
 
+        public bool isLocal { set; get; }
+
     }
 }

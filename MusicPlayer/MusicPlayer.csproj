@@ -31,6 +31,7 @@
     <PackageReference Include="Vlc.DotNet.Core.Interops" Version="3.1.0" />
     <PackageReference Include="Vlc.DotNet.Forms" Version="3.1.0" />
     <PackageReference Include="Vlc.DotNet.Wpf" Version="3.1.0" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
     <PackageReference Include="WPFMediaKit" Version="2.2.0" />
     <PackageReference Include="YoutubeExplode" Version="3.0.0" />
   </ItemGroup>
@@ -89,6 +90,34 @@
 
   <ItemGroup>
     <Folder Include="tmp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\DirectShowLib-2005.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter32.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\DirectShowLib-2005.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter32.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\EVRPresenter64.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\raul_\.nuget\packages\wpfmediakit\2.2.0\build\DirectShowLib-2005.dll" />
   </ItemGroup>
 
 </Project>
