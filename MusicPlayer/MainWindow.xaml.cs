@@ -622,6 +622,7 @@ namespace MusicPlayer
             Artist.Text = videos[songIndex].Artist;
             Title.Text = videos[songIndex].Title;
             listView.SelectedItem = listView.Items[songIndex];
+            this.isPlaying = true;
 
         }
 
